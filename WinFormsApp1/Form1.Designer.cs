@@ -31,19 +31,21 @@
             listView1 = new ListView();
             textBox1 = new TextBox();
             button1 = new Button();
+            button2 = new Button();
+            Size = new ColumnHeader();
+            Path = new ColumnHeader();
             SuspendLayout();
             // 
             // listView1
             // 
+            listView1.Columns.AddRange(new ColumnHeader[] { Size, Path });
             listView1.Location = new Point(47, 151);
             listView1.Name = "listView1";
             listView1.Size = new Size(698, 226);
             listView1.TabIndex = 0;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
-            listView1.Columns.Add("Size", 100);
-            listView1.Columns.Add("Path", 500);
-
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
             // 
             // textBox1
             // 
@@ -51,7 +53,7 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(405, 23);
             textBox1.TabIndex = 1;
-            textBox1.Text = @"c:\";
+            textBox1.Text = "c:\\";
             // 
             // button1
             // 
@@ -64,11 +66,32 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
+            // button2
+            // 
+            button2.Location = new Point(494, 86);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 3;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // Size
+            // 
+            Size.Text = "Size";
+            Size.Width = 100;
+            // 
+            // Path
+            // 
+            Path.Text = "Path";
+            Path.Width = 500;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(textBox1);
             Controls.Add(listView1);
@@ -83,5 +106,8 @@
         private ListView listView1;
         private TextBox textBox1;
         private Button button1;
+        private Button button2;
+        private ColumnHeader Size;
+        private ColumnHeader Path;
     }
 }

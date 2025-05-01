@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Security;
 using System.Threading;
 
 namespace WinFormsApp1
@@ -314,7 +315,8 @@ namespace WinFormsApp1
             int topCount = 10;
 
             cancellationTokenSource = new CancellationTokenSource();
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 FindBigDirectories(startDirectory, filterSize, topCount, cancellationTokenSource.Token);
                 Invoke((MethodInvoker)delegate
                 {
@@ -349,6 +351,54 @@ namespace WinFormsApp1
                 StartSearch();
             }
             running = !running;
+        }
+
+        private OpenFileDialog openFileDialog1;
+        private TextBox textBox2;
+
+        private void SetText(string text)
+        {
+            textBox2.Text = text;
+        }
+
+        private void SelectButton_Click(object sender, EventArgs e)
+        {
+            Debugger.Break();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            openFileDialog1 = new OpenFileDialog();
+            button2.Click += new EventHandler(SelectButton_Click);
+            textBox2 = new TextBox
+            {
+                Size = new Size(300, 300),
+                Location = new Point(15, 40),
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
+            };
+            // ClientSize = new Size(330, 360);
+            Controls.Add(button2);
+            // Controls.Add(textBox2);
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var sr = new StreamReader(openFileDialog1.FileName);
+                    SetText(sr.ReadToEnd());
+                }
+                catch (SecurityException ex)
+                {
+                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                    $"Details:\n\n{ex.StackTrace}");
+                }
+            }
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
